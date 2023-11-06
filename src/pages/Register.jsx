@@ -40,7 +40,7 @@ const registerHandler = async (e) => {
     }
   }
      
-    return (
+ return (
     
 <div className="container" style={{ marginTop: "120px" }}>
 <div className="row justify-content-center">

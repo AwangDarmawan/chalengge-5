@@ -5,7 +5,7 @@ import Notpound from "./pages/NotPound";
 import PageOne from './pages/PageOne';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import DetailFilm from './components/DetailFilm.Jsx';
+import DetailFilm from './components/DetailFilm';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 

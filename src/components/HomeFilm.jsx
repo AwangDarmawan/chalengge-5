@@ -79,49 +79,48 @@ function HomeFilm() {
     setUserData(null); 
     navigate('/');
   };
-  const hasToken = localStorage.getItem('token');
+  
+  const fetchData = async () => {
+    try {
+      if (token) {
+          const userData = await getUserData(token);
+          if (userData) {
+            console.log('User Data:', userData);
+            setUserData(userData)
+        }
+      }
+      
+      if (text !== '') {
+        const response = await axios.get(
+          // `https://shy-cloud-3319.fly.dev/api/v1/search/movie?page=1&query=${text}`,
+          `${import.meta.env.VITE_API_URL}/search/movie?page=1&query=${text}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = response.data.data;
+        setFilmList(data);
+
+        console.log('Searcrch', data);
+        console.log('Search Text:', text);
+        console.log('Token:', token);
+
+        setRefreshing(false);
+      } else if (refreshing) {
+        getFilm();
+        setText('');
+      } else {
+        getFilm();
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (token) {
-            const userData = await getUserData(token);
-            if (userData) {
-              console.log('User Data:', userData);
-              setUserData(userData)
-          }
-        }
-        
-        if (text !== '') {
-          const response = await axios.get(
-            // `https://shy-cloud-3319.fly.dev/api/v1/search/movie?page=1&query=${text}`,
-            `${import.meta.env.VITE_API_URL}/search/movie?page=1&query=${text}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-  
-          const data = response.data.data;
-          setFilmList(data);
-
-          console.log('Searcrch', data);
-          console.log('Search Text:', text);
-          console.log('Token:', token);
-
-          setRefreshing(false);
-        } else if (refreshing) {
-          getFilm();
-          setText('');
-        } else {
-          getFilm();
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-  
     fetchData();
   }, [text, refreshing, token]);
   
